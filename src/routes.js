@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const uuid = require("uuid");
 
 const router = Router();
 
@@ -11,9 +12,20 @@ router.get("/products/findByName", (req, res) => {
 });
 
 router.post("/products", (req, res) => {
-    const { name, description } = req.query;
-    products.push({ name, description });
-    return res.status(200);
+    const { name, description } = req.body;
+    const product = { id: uuid.v4(), name, description };
+    products.push(product);
+    return res.json(product);
+})
+
+router.get("/products/:id", (req, res) => {
+    const { id } = req.params;
+    const product = products.find(product => product.id === id);
+    if (!product) {
+        res.status(404);
+        return res.json({ message: `Could not find product for id "${id}"` })
+    }
+    return res.json(product);
 })
 
 router.get("/products", (req, res) => {
