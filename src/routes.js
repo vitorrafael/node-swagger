@@ -12,8 +12,8 @@ router.get("/products/findByName", (req, res) => {
 });
 
 router.post("/products", (req, res) => {
-    const { name, description } = req.body;
-    const product = { id: uuid.v4(), name, description };
+    const { name, description, price } = req.body;
+    const product = { id: uuid.v4(), name, description, price };
     products.push(product);
     return res.json(product);
 })
